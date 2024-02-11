@@ -54,23 +54,20 @@ public class User {
     }
 
     public void setAlbums(Set<Album> albums) {
+
         this.albums = albums;
     }
 
-    public void addAlbum(Album album){
+    public void addAlbum(Album album) {
         albums.add(album);
     }
 
-    public void removeAlbum(Album album){
+    public void removeAlbum(Album album) {
         albums.remove(album);
     }
 
     @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
-    @JoinTable(
-            name = "users_photos",
-            joinColumns = @JoinColumn(name = "user_id"),
-            inverseJoinColumns = @JoinColumn(name = "photo_id")
-    )
+    @JoinTable(name = "users_photos", joinColumns = @JoinColumn(name = "user_id"), inverseJoinColumns = @JoinColumn(name = "photo_id"))
     Set<Photo> likedPhotos = new HashSet<>();
 
     public Set<Photo> getLikedPhotos() {
@@ -83,6 +80,28 @@ public class User {
 
     public void removeLikedPhoto(Photo photo) {
         likedPhotos.remove(photo);
+    }
+
+
+    @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+    @JoinTable(name="users_friends",
+            joinColumns=@JoinColumn(name="user_id"),
+            inverseJoinColumns=@JoinColumn(name="friend_id")
+    )
+    Set<User> friends = new HashSet<>();
+
+    public Set<User> getFriends() {
+        return friends;
+    }
+
+    public void addFriend(User user) {
+        friends.add(user);
+        user.getFriends().add(this);
+    }
+
+    public void removeFriend(User user) {
+        friends.remove(user);
+        user.getFriends().remove(this);
     }
 
 

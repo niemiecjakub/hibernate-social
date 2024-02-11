@@ -56,7 +56,6 @@ public class Photo {
         likedBy.remove(user);
     }
 
-
     @Override
     public String toString() {
         return "Photo { " + name + ": " + date + " }";
